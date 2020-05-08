@@ -1,5 +1,6 @@
 import sys
 import json
+import datetime
 import ftplib
 from ftplib import FTP
 
@@ -14,6 +15,8 @@ password = secrets["password"]
 filelist = []
 filenames = []
 target = ''
+today_backup_stem = "backup-{}".format(datetime.date.today())
+
 
 ftp = FTP(server)
 ftp.login(username, password)
@@ -23,7 +26,7 @@ for line in filelist:
 	filenames.append(line.split(" ")[-1])
 
 for filename in filenames:
-	if "backup" in filename:
+	if today_backup_stem in filename:
 		target = filename
 
 dest_filename = "{}/{}".format(localdestination, target)
