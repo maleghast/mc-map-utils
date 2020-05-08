@@ -5,6 +5,7 @@ from ftplib import FTP
 
 secrets_response = json.loads(sys.argv[1])
 secrets = json.loads(secrets_response['SecretString'])
+localdestination = sys.argv[2]
 
 server = secrets["server"] 
 username = secrets["username"] 
@@ -25,7 +26,9 @@ for filename in filenames:
 	if "backup" in filename:
 		target = filename
 
-with open('/home/ec2-user/backup.zip', 'wb') as fp:
+dest_filename = "{}/{}".format(localdestination, target)
+
+with open(dest_filename, 'wb') as fp:
 	ftp.retrbinary('RETR {}'.format(target), fp.write)
 
 
